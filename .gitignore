@@ -10,3 +10,19 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Mac Specific
+*.Ulysses-Group.plist
+*.DS_Store
+
+
+# Eclipse Specific
+.metadata
+.recommenders
+.settings
+RemoteSystemsTempFiles
+.project
+
+# Gradle
+.gradle
+

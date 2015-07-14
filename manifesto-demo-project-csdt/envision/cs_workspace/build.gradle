@@ -1,0 +1,57 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+dependencies {
+  compile group: 'com.fatwire.cs', name: 'cs-core', version: '11.1.1.8.0'
+  compile group: 'com.fatwire.cs', name: 'cs', version: '11.1.1.8.0'
+  compile group: 'com.fatwire.cs', name: 'xcelerate', version: '11.1.1.8.0'
+  compile group: 'com.fatwire.cs', name: 'assetapi', version: '11.1.1.8.0'
+  compile group: 'com.fatwire.cs', name: 'assetapi-impl', version: '11.1.1.8.0'  
+  compile group: 'com.fatwire.cs', name: 'gator', version: '11.1.1.8.0'       
+  compile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+  compile group: 'javax.servlet', name: 'jsp-api', version: '2.0'  
+  compile group: 'commons-lang', name: 'commons-lang', version: '2.4'
+  compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'  
+ 
+  compile group: 'uk.co.manifesto.wcs', name: 'manifesto-demo-project-web', version: '1.0.0'
+  compile 'org.codehaus.groovy:groovy-all:1.7.5'
+  
+}
+
+
+project.afterEvaluate {
+  // use jre lib matching version used by project, not the workspace default
+  if (project.sourceCompatibility != null) {
+    def target = project.sourceCompatibility.toString()
+    def containerPrefix = "org.eclipse.jdt.launching.JRE_CONTAINER"
+    def containerSuffix
+    if (target =~ /1.[4-5]/) {
+      containerSuffix = '/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-' + target
+    } else if (target =~ /1.[6-8]/) {
+      containerSuffix = '/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-' + target
+    }
+    if (containerSuffix != null) {
+      project.eclipse.classpath {
+        containers.removeAll { it.startsWith(containerPrefix) }
+        containers.add(containerPrefix + containerSuffix)
+      }
+    }
+  }
+}
